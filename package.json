@@ -1,0 +1,76 @@
+{
+  "name": "vite-html-editor",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A hybrid visual and code-based HTML editor powered by Vite",
+  "main": "electron-dist/main.js",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"npm run electron:watch\" \"wait-on http://localhost:5173 electron-dist/main.js && npm run electron:serve\"",
+    "build": "vite build && tsc -p electron/tsconfig.json",
+    "preview": "vite preview",
+    "lint": "eslint .",
+
+    "electron:watch": "tsc -p electron/tsconfig.json --watch --preserveWatchOutput",
+    "electron:serve": "electronmon electron-dist/main.js",
+    "electron:run": "tsc -p electron/tsconfig.json && electron .",
+
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "grapesjs": "^0.22.14",
+    "grapesjs-preset-webpage": "^1.0.3",
+    "monaco-editor": "^0.55.1",
+    "prettier": "^3.7.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "concurrently": "^9.2.1",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12",
+    "electronmon": "^2.0.3",
+    "esbuild": "^0.25.12",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "npm:rolldown-vite@7.2.5",
+    "vite-plugin-monaco-editor": "^1.1.0",
+    "wait-on": "^9.0.3"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "build": {
+    "appId": "com.dk.vitehtmleditor",
+    "productName": "Vite HTML Editor",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron-dist/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

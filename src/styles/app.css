@@ -1,0 +1,739 @@
+@import "grapesjs/dist/css/grapes.min.css";
+
+/* =========================================
+   THEME SYSTEM (CSS variables)
+   ========================================= */
+
+:root {
+  --bg: #050505;
+  --panel: #0d0d0d;
+  --panel2: #141414;
+  --border: rgba(255, 255, 255, 0.14);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.58);
+  --accent: #4fd1ff;
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Theme presets set on <html data-theme="..."> */
+html[data-theme="dark"] {
+  --bg: #050505;
+  --panel: #0d0d0d;
+  --panel2: #141414;
+  --border: rgba(255, 255, 255, 0.14);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.58);
+  --accent: #4fd1ff;
+  color-scheme: dark;
+}
+
+html[data-theme="dim"] {
+  /* Mid-grey, neutral, long-session friendly */
+  --bg: #2b2d31;
+  --panel: #34363c;
+  --panel2: #3b3e45;
+  --border: rgba(255, 255, 255, 0.18);
+  --text: rgba(255, 255, 255, 0.88);
+  --muted: rgba(255, 255, 255, 0.62);
+  --accent: #8bcaff;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --panel2: #f1f3f8;
+  --border: rgba(0, 0, 0, 0.12);
+  --text: rgba(0, 0, 0, 0.86);
+  --muted: rgba(0, 0, 0, 0.60);
+  --accent: #0ea5e9;
+  color-scheme: light;
+}
+
+/* =========================================
+   APP BASE
+   ========================================= */
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   TOP BAR + CONTROLS
+   ========================================= */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+}
+
+.topbar strong {
+  letter-spacing: 0.2px;
+  color: var(--text);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(127, 127, 127, 0.12);
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 7px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+html[data-theme="light"] .btn {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+html[data-theme="light"] .btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible,
+.tab:focus-visible,
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Select styled like a button (clear contrast) */
+select.btn {
+  appearance: none;
+  background-color: var(--panel2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+select.btn option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* =========================================
+   CODE TABS (drawer content)
+   ========================================= */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel2);
+}
+
+.tab {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  padding: 7px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+html[data-theme="light"] .tab {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.tab.active {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent) inset;
+}
+
+.editorWrap {
+  flex: 1;
+  min-height: 0;
+}
+
+.statusline {
+  border-top: 1px solid var(--border);
+  padding: 8px 10px;
+  font-size: 12px;
+  background: var(--panel2);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.monoHint {
+  opacity: 0.9;
+}
+
+/* Warning (Advanced Mode) — compact, non-blocking */
+.warning {
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 196, 0, 0.14);
+  color: rgba(255, 232, 186, 0.95);
+  padding: 8px 12px;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+/* =========================================
+   WEBFLOW-LIKE GRAPESJS SHELL
+   ========================================= */
+
+.wfPanelHeader {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+html[data-theme="light"] .wfPanelHeader {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.wfPanelBody {
+  height: calc(100% - 40px);
+  overflow: auto;
+  border-right: 1px solid var(--border);
+}
+
+.wfDivider {
+  height: 10px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+
+.wfCanvasTopbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] .wfCanvasTopbar {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.wfCanvasTitle {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.wfCanvasHint {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--muted) 75%, transparent);
+}
+
+
+
+/* =========================================
+   CANVAS TOOLBAR + LAYOUT HELPERS
+   ========================================= */
+
+.wfToolBtn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wfToolBtn.active {
+  background: var(--panel2);
+}
+
+.wfToolbarGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--panel) 85%, transparent);
+}
+
+.wfToolbarSep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 2px;
+}
+
+.wfIconBtn {
+  width: 30px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.wfIconBtn:hover {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--panel2) 70%, transparent);
+}
+
+.wfIconBtn.danger:hover {
+  border-color: color-mix(in srgb, #ff5a5a 60%, var(--border));
+  background: color-mix(in srgb, #ff5a5a 12%, transparent);
+}
+
+.wfLayoutCard {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel2) 65%, transparent);
+}
+
+.wfLayoutHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.wfLayoutTitle {
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.2px;
+}
+
+.wfLayoutSub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.wfLayoutRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.wfLayoutLabel {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.wfLayoutValue {
+  font-size: 12px;
+  color: var(--text);
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wfLayoutPill {
+  font-size: 11px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.wfLayoutActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.wfMiniBtn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.wfMiniBtn:hover {
+  background: color-mix(in srgb, var(--panel) 65%, transparent);
+}
+
+.wfGapWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 70%;
+  justify-content: flex-end;
+}
+
+.wfGapWrap input[type="range"] {
+  width: 140px;
+}
+
+.wfGapValue {
+  font-size: 12px;
+  color: var(--text);
+  min-width: 44px;
+  text-align: right;
+}
+
+.wfLayoutHint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+
+/* =========================================
+   GRAPESJS THEME TUNING
+   ========================================= */
+
+.gjs-one-bg {
+  background-color: var(--panel) !important;
+}
+.gjs-two-color {
+  color: var(--text) !important;
+}
+.gjs-three-bg {
+  background-color: var(--panel2) !important;
+}
+.gjs-four-color {
+  color: var(--muted) !important;
+}
+
+.gjs-pn-panel {
+  border-color: var(--border) !important;
+}
+
+.gjs-cv-canvas {
+  background: var(--bg) !important;
+}
+
+/* Canvas "paper" feel */
+.gjs-frame {
+  background: white !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="light"] .gjs-frame {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Blocks nicer */
+.gjs-block {
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+.gjs-block:hover {
+  background: rgba(255, 255, 255, 0.10) !important;
+}
+html[data-theme="light"] .gjs-block {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+html[data-theme="light"] .gjs-block:hover {
+  background: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* =========================================
+   CANVAS SCROLL FIXES
+   ========================================= */
+
+#gjs-canvas {
+  height: 100% !important;
+  overflow: auto !important;
+  min-height: 0 !important;
+}
+
+.gjs-cv-canvas {
+  height: 100% !important;
+  overflow: visible !important; /* let #gjs-canvas be the scroller */
+}
+
+.gjs-cv-canvas__frames,
+.gjs-cv-canvas__frame {
+  min-height: 0 !important;
+}
+
+/* =========================================
+   SETTINGS MODAL
+   ========================================= */
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+
+html[data-theme="light"] .modalBackdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.modal {
+  width: min(980px, 100%);
+  height: min(760px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.55);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel2);
+}
+
+.modalBody {
+  padding: 14px;
+  overflow: auto;
+  display: grid;
+  gap: 14px;
+}
+
+.settingsSection {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] .settingsSection {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.settingsTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.field span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.fieldRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] .fieldRow {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--panel2);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.textarea {
+  min-height: 160px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.help {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--muted) 88%, transparent);
+}
+
+.paletteGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 720px) {
+  .paletteGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.paletteItem {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 8px;
+}
+
+html[data-theme="light"] .paletteItem {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.paletteItem span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.paletteItem.disabled {
+  opacity: 0.6;
+}
+
+.paletteControls {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.color {
+  width: 44px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 0;
+  background: transparent;
+}
+
+/* =========================================
+   SCROLLBARS
+   ========================================= */
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+html[data-theme="light"] *::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+html[data-theme="light"] *::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+
+/* Hide GrapesJS default top/side panel buttons (we use our own Webflow layout) */
+.gjs-pn-panels,
+.gjs-pn-views,
+.gjs-pn-options,
+.gjs-pn-commands,
+.gjs-pn-btn,
+.gjs-pn-buttons {
+  display: none !important;
+}
+
+/* While resizing, prevent iframe from stealing input (extra safety) */
+.ve-resizing iframe {
+  pointer-events: none !important;
+}
+
+/* Hide any default GrapesJS panel UI */
+.gjs-pn-panels,
+.gjs-pn-views,
+.gjs-pn-options,
+.gjs-pn-commands,
+.gjs-pn-buttons {
+  display: none !important;
+}
